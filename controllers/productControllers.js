@@ -87,8 +87,22 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+// ALL PRODUCTS
+
+const allProduct = async (req, res) => {
+    try {
+        let productdata = await product.find();
+
+        return res.status(200).send(productdata)
+
+    } catch (err) {
+        return res.status(500).send(err.massage)
+    }
+}
+
 module.exports = {
     addproduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    allProduct
 }

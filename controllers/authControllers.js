@@ -82,7 +82,7 @@ const login = async (req, res) => {
 
     // return res.send("done");
     let data = {
-        massage: "done"
+        key: "done"
     }
     return res.json(data)
   } catch (err) {

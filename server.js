@@ -4,12 +4,14 @@ require('dotenv').config();
 const authRouter = require('./routers/authRouters');
 const productRouter = require('./routers/productRouters');
 const cors = require('cors');
+const cookies = require('cookie-parser')
 
 let app = express();
 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookies());
 
 app.use('/', authRouter)
 app.use('/product', productRouter)
