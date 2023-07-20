@@ -13,7 +13,7 @@ const productSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  productDec: {
+  productDesc: {
     type: String,
     required: true,
   },

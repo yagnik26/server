@@ -14,18 +14,18 @@ const signup = async (req, res) => {
     console.log(req.body);
 
     if (!(name, email, password, cpassword)) {
-      return res.status(400).send("all fields are required");
+      return res.status(400).json("all fields are required");
     }
 
     if(password !== cpassword)
     {
-        return res.status(400).send('Password cannot match');
+        return res.status(400).json('Password cannot match');
     }
 
     let oldUser = await user.findOne({ email: email });
 
     if (oldUser) {
-      return res.status(400).send("user already exists");
+      return res.status(400).json("user already exists");
     }
 
     let hashPassword = await bcrypt.hash(password, 10);
@@ -46,7 +46,7 @@ const signup = async (req, res) => {
 
     res.cookie("jwt", token);
 
-    return res.status(200).send('User created successfully');
+    return res.status(200).json(token);
   } catch (err) {
     return res.status(500).send(err.message);
   }
@@ -59,19 +59,19 @@ const login = async (req, res) => {
     let { email, password } = req.body;
 
     if (!(email, password)) {
-      return res.status(401).send("All fealds are required");
+      return res.status(401).json("All fealds are required");
     }
 
     let matchuser = await user.findOne({ email: email });
 
     if (!matchuser) {
-      return res.status(401).send("user not found");
+      return res.status(401).json("user not found");
     }
 
     let matchpassword = await bcrypt.compare(password, matchuser.password);
 
     if (!matchpassword) {
-      return res.status(401).send("password is incorrect");
+      return res.status(401).json("password is incorrect");
     }
 
     const token = await jwt.sign(matchuser.id, process.env.TOKEN_KEY);
@@ -80,11 +80,7 @@ const login = async (req, res) => {
 
     res.cookie("jwt", token);
 
-    // return res.send("done");
-    let data = {
-        key: "done"
-    }
-    return res.json(data)
+    return res.json(token)
   } catch (err) {
     return res.status(500).send(err.message);
   }
@@ -147,21 +143,20 @@ const deleteuser = async (req, res) => {
 
 // USER LOGOUT
 
-const logout = (req, res) => {
-    try {
-        req.logout((err) => {
-            return res.status(500).send(err.message)
-        })
-        return res.status(200).send('user logged out successfully');
-    } catch (err) {
-        return res.status(500).send(err.message)
-    }
-}
+// const logout = (req, res) => {
+//     try {
+//         req.logout((err) => {
+//             return res.status(500).send(err.message)
+//         })
+//         return res.status(200).send('user logged out successfully');
+//     } catch (err) {
+//         return res.status(500).send(err.message)
+//     }
+// }
 
 module.exports = {
   signup,
   login,
   updateuser,
-  deleteuser,
-  logout
+  deleteuser
 };

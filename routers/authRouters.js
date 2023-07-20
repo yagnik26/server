@@ -7,6 +7,5 @@ router.post('/signup', signup)
 router.post('/login', login)
 router.patch('/updateuser', updateuser)
 router.delete('/deleteuser', deleteuser)
-router.get('/logout', logout)
 
 module.exports = router;
